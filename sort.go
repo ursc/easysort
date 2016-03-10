@@ -76,7 +76,6 @@ func (s *sortableSlice) Less(i, j int) bool {
 }
 
 func (s *sortableSlice) Swap(i, j int) {
-	fmt.Printf("swap %d and %d\n", i, j)
 	v1 := s.value.Index(i)
 	v2 := s.value.Index(j)
 	i1 := v1.Interface()

@@ -39,3 +39,10 @@ func TestReverse(t *testing.T) {
 	Reverse(slice)
 	t.Logf("reverse: %v", slice)
 }
+
+func BenchmarkByFieldString(b *testing.B) {
+	slice := []TestStruct{testA, testC, testB}
+	for i := 0; i < b.N; i++ {
+		ByField(slice, "String")
+	}
+}
