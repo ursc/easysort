@@ -37,5 +37,5 @@ func TestSortByField(t *testing.T) {
 func TestReverse(t *testing.T) {
 	slice := []TestStruct{testA, testC, testB}
 	Reverse(slice)
-	t.Logf("reverse: %s", slice)
+	t.Logf("reverse: %v", slice)
 }

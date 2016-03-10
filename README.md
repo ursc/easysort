@@ -19,5 +19,7 @@ func main() {
 	users := []User{ User{"testa", 45}, User{"testb", 30} }
 	easysort.ByField(users, "Age")
 	fmt.Println(users)
+	easysort.Reverse(users)
+	fmt.Println(users)
 }
 ```
