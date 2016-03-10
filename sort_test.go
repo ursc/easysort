@@ -30,7 +30,7 @@ var testC = TestStruct{"c", time.Unix(100000000, 0), 3.33, 3.33, true, 2, 2, 2, 
 
 func TestSortByField(t *testing.T) {
 	slice := []TestStruct{testA, testC, testB}
-	ByField(slice, "Byte")
+	ByField(slice, "Bytes")
 	t.Logf("result: %v", slice)
 }
 

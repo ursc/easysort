@@ -1,6 +1,7 @@
 package easysort
 
 import (
+	"bytes"
 	"fmt"
 	"reflect"
 	"sort"
@@ -63,6 +64,13 @@ func (s *sortableSlice) Less(i, j int) bool {
 		return f1.Uint() < f2.Uint()
 	case reflect.Uint64:
 		return f1.Uint() < f2.Uint()
+	case reflect.Slice:
+		if f1.Index(0).Kind() == reflect.Uint8 {
+			if f1.Len() > 1 {
+				return bytes.Compare(f1.Bytes(), f2.Bytes()) == -1
+			}
+			return false
+		}
 	}
 	panic(fmt.Errorf("unsupported field data type: %s", f1.Kind().String()))
 }
@@ -77,6 +85,7 @@ func (s *sortableSlice) Swap(i, j int) {
 	v2.Set(reflect.ValueOf(i1))
 }
 
+// ByField will sort struct slice by fieldName
 func ByField(v interface{}, fieldName string) {
 	sliceValue := reflect.ValueOf(v)
 	if sliceValue.Kind() != reflect.Slice {
@@ -94,6 +103,7 @@ func ByField(v interface{}, fieldName string) {
 	sort.Sort(&metaSlice)
 }
 
+// Reverse will reverse order of slice elements
 func Reverse(v interface{}) {
 	sliceValue := reflect.ValueOf(v)
 	if sliceValue.Kind() != reflect.Slice {
