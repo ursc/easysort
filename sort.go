@@ -92,3 +92,18 @@ func ByField(v interface{}, fieldName string) {
 	metaSlice := sortableSlice{value: sliceValue, len: len, fieldName: fieldName}
 	sort.Sort(&metaSlice)
 }
+
+func Reverse(v interface{}) {
+	sliceValue := reflect.ValueOf(v)
+	if sliceValue.Kind() != reflect.Slice {
+		panic("value is not a slice")
+	}
+	len := sliceValue.Len()
+	if len < 2 {
+		return
+	}
+	metaSlice := sortableSlice{value: sliceValue, len: len, fieldName: fieldName}
+	for i:=0;i<=len/2;i++) {
+		metaSlice.Swap(i,len-i-1)
+	}
+}

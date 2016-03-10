@@ -29,7 +29,13 @@ var testB = TestStruct{"b", time.Unix(100000, 0), 2.22, 2.22, false, 1, 1, 1, 1,
 var testC = TestStruct{"c", time.Unix(100000000, 0), 3.33, 3.33, true, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, []byte("testC")}
 
 func TestSortByField(t *testing.T) {
-	stringSlice := []TestStruct{testA, testC, testB}
-	ByField(stringSlice, "Byte")
-	t.Logf("result: %v", stringSlice)
+	slice := []TestStruct{testA, testC, testB}
+	ByField(slice, "Byte")
+	t.Logf("result: %v", slice)
+}
+
+func TestReverse(t *testing.T) {
+	slice := []TestStruct{testA, testC, testB}
+	Reverse(stringSlice)
+	t.Logf("reverse: %s", slice)
 }
