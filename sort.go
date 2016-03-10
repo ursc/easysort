@@ -103,7 +103,7 @@ func Reverse(v interface{}) {
 		return
 	}
 	metaSlice := sortableSlice{value: sliceValue, len: len, fieldName: fieldName}
-	for i:=0;i<=len/2;i++) {
-		metaSlice.Swap(i,len-i-1)
+	for i := 0; i <= len/2; i++ {
+		metaSlice.Swap(i, len-i-1)
 	}
 }
