@@ -1,10 +1,10 @@
 package easysort
 
 import (
-	"testing"
-	"time"
 	"sort"
 	"strings"
+	"testing"
+	"time"
 )
 
 type TestStruct struct {
@@ -49,6 +49,7 @@ func TestSortByField(t *testing.T) {
 	ByField(slice, "Bytes")
 	t.Logf("result: %v", slice)
 }
+
 /*
 func TestSortByFieldMapStringInterface(t *testing.T) {
 	slice := []map[string]interface{}{
@@ -68,7 +69,7 @@ func TestReverse(t *testing.T) {
 func BenchmarkByFieldString(b *testing.B) {
 	len := 100000
 	slice := make([]TestStruct, len)
-	for i:=0;i<len-2;i++ {
+	for i := 0; i < len-2; i++ {
 		slice[i] = testB
 	}
 	slice[len-2] = testC
@@ -81,7 +82,7 @@ func BenchmarkByFieldString(b *testing.B) {
 func BenchmarkNativeByString(b *testing.B) {
 	len := 100000
 	slice := make(TestStructs, len)
-	for i:=0;i<len-2;i++ {
+	for i := 0; i < len-2; i++ {
 		slice[i] = testB
 	}
 	slice[len-2] = testC
