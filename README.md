@@ -1,4 +1,8 @@
 # easysort
+
+[![Build Status](https://travis-ci.org/miolini/easysort.svg?branch=master)](https://travis-ci.org/miolini/easysort)
+[![GoDoc](https://godoc.org/github.com/miolini/easysort?status.svg)](https://godoc.org/github.com/miolini/easysort)
+
 Easy sort in Go
 
 ## Example
