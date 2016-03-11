@@ -3,6 +3,8 @@ package easysort
 import (
 	"testing"
 	"time"
+	"sort"
+	"strings"
 )
 
 type TestStruct struct {
@@ -24,6 +26,20 @@ type TestStruct struct {
 	Bytes   []byte
 }
 
+type TestStructs []TestStruct
+
+func (ts TestStructs) Len() int {
+	return len(ts)
+}
+
+func (ts TestStructs) Less(i, j int) bool {
+	return strings.Compare(ts[i].String, ts[j].String) == -1
+}
+
+func (ts TestStructs) Swap(i, j int) {
+	ts[i], ts[j] = ts[j], ts[i]
+}
+
 var testA = TestStruct{"a", time.Unix(0, 0), 1.11, 1.11, false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, []byte("testA")}
 var testB = TestStruct{"b", time.Unix(100000, 0), 2.22, 2.22, false, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, []byte("testB")}
 var testC = TestStruct{"c", time.Unix(100000000, 0), 3.33, 3.33, true, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, []byte("testC")}
@@ -33,7 +49,16 @@ func TestSortByField(t *testing.T) {
 	ByField(slice, "Bytes")
 	t.Logf("result: %v", slice)
 }
-
+/*
+func TestSortByFieldMapStringInterface(t *testing.T) {
+	slice := []map[string]interface{}{
+		map[string]interface{}{"user":"testb", "age": 45},
+		map[string]interface{}{"user":"testa", "age": 35},
+	}
+	ByField(slice, "age")
+	t.Logf("result: %v", slice)
+}
+*/
 func TestReverse(t *testing.T) {
 	slice := []TestStruct{testA, testC, testB}
 	Reverse(slice)
@@ -41,8 +66,27 @@ func TestReverse(t *testing.T) {
 }
 
 func BenchmarkByFieldString(b *testing.B) {
-	slice := []TestStruct{testA, testC, testB}
+	len := 100000
+	slice := make([]TestStruct, len)
+	for i:=0;i<len-2;i++ {
+		slice[i] = testB
+	}
+	slice[len-2] = testC
+	slice[len-1] = testA
 	for i := 0; i < b.N; i++ {
 		ByField(slice, "String")
+	}
+}
+
+func BenchmarkNativeByString(b *testing.B) {
+	len := 100000
+	slice := make(TestStructs, len)
+	for i:=0;i<len-2;i++ {
+		slice[i] = testB
+	}
+	slice[len-2] = testC
+	slice[len-1] = testA
+	for i := 0; i < b.N; i++ {
+		sort.Sort(slice)
 	}
 }
