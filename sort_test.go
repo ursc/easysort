@@ -2,7 +2,6 @@ package easysort
 
 import (
 	"sort"
-	"strings"
 	"testing"
 	"time"
 )
@@ -33,7 +32,7 @@ func (ts TestStructs) Len() int {
 }
 
 func (ts TestStructs) Less(i, j int) bool {
-	return strings.Compare(ts[i].String, ts[j].String) == -1
+	return ts[i].Int < ts[j].Int
 }
 
 func (ts TestStructs) Swap(i, j int) {
@@ -66,7 +65,7 @@ func TestReverse(t *testing.T) {
 	t.Logf("reverse: %v", slice)
 }
 
-func BenchmarkByFieldString(b *testing.B) {
+func BenchmarkByFieldInt(b *testing.B) {
 	len := 100000
 	slice := make([]TestStruct, len)
 	for i := 0; i < len-2; i++ {
@@ -75,11 +74,11 @@ func BenchmarkByFieldString(b *testing.B) {
 	slice[len-2] = testC
 	slice[len-1] = testA
 	for i := 0; i < b.N; i++ {
-		ByField(slice, "String")
+		ByField(slice, "Int")
 	}
 }
 
-func BenchmarkNativeByString(b *testing.B) {
+func BenchmarkNativeByInt(b *testing.B) {
 	len := 100000
 	slice := make(TestStructs, len)
 	for i := 0; i < len-2; i++ {

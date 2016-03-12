@@ -13,19 +13,29 @@ type sortableSlice struct {
 	value     reflect.Value
 	len       int
 	fieldName string
+	kind      reflect.Kind
+	fields    []*reflect.Value
 }
 
 func (s *sortableSlice) Len() int {
 	return s.len
 }
 
-func (s *sortableSlice) Less(i, j int) bool {
-	f1 := s.value.Index(i).FieldByName(s.fieldName)
-	f2 := s.value.Index(j).FieldByName(s.fieldName)
-	if f1.Kind() != f2.Kind() {
-		panic("different elements of slice")
+func (s *sortableSlice) getField(i int) (val *reflect.Value) {
+	val = s.fields[i]
+	if val != nil {
+		return
 	}
-	switch f1.Kind() {
+	v := s.value.Index(i).FieldByName(s.fieldName)
+	val = &v
+	s.fields[i] = val
+	return
+}
+
+func (s *sortableSlice) Less(i, j int) bool {
+	f1 := s.getField(i)
+	f2 := s.getField(j)
+	switch s.kind {
 	case reflect.String:
 		return strings.Compare(f1.String(), f2.String()) == -1
 	case reflect.Struct:
@@ -76,6 +86,7 @@ func (s *sortableSlice) Less(i, j int) bool {
 }
 
 func (s *sortableSlice) Swap(i, j int) {
+	return
 	v1 := s.value.Index(i)
 	v2 := s.value.Index(j)
 	i1 := v1.Interface()
@@ -98,7 +109,7 @@ func ByField(v interface{}, fieldName string) {
 	if !field.IsValid() {
 		panic(fmt.Errorf("field not exist: %s", fieldName))
 	}
-	metaSlice := sortableSlice{value: sliceValue, len: len, fieldName: fieldName}
+	metaSlice := sortableSlice{value: sliceValue, len: len, fieldName: fieldName, kind: field.Kind(), fields: make([]*reflect.Value, len)}
 	sort.Sort(&metaSlice)
 }
 
