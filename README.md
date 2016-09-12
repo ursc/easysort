@@ -1,8 +1,5 @@
 # easysort
 
-[![Build Status](https://travis-ci.org/miolini/easysort.svg?branch=master)](https://travis-ci.org/miolini/easysort)
-[![GoDoc](https://godoc.org/github.com/miolini/easysort?status.svg)](https://godoc.org/github.com/miolini/easysort)
-
 Easy sort in Go
 
 ## Example
@@ -11,7 +8,7 @@ Easy sort in Go
 
 import (
 	"fmt"
-	"github.com/miolini/easysort"
+	"github.com/ursc/easysort"
 )
 
 type User struct {
@@ -20,10 +17,14 @@ type User struct {
 }
 
 func main() {
-	users := []User{ User{"testa", 45}, User{"testb", 30} }
-	easysort.ByField(users, "Age")
-	fmt.Println(users)
-	easysort.Reverse(users)
-	fmt.Println(users)
+	z := []User{ User{"testa", 45}, User{"testb", 30} }
+	
+	byID := easysort.IndexBy(len(z), func(i, j int) bool {
+		return z[i].Age < z[j].Age
+	})
+
+	easysort.OrderBy(len(z), func(i, j int) { z[i], z[j] = z[j], z[i] },
+		func(i, j int) bool { return z[i].Name < z[j].Name },
+	)
 }
 ```
